@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+	<head>
+
+		<title>mesibo on-premise control center </title>
+
+		<meta charset="UTF-8">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="stylesheet" href="third-party/bootstrap.min.css">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+		<link rel="stylesheet" href="styles/live.css">
+
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+		<script type="text/javascript" src="third-party/bootstrap.min.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" crossorigin="anonymous"></script>
+		<script type="text/javascript" src="http://127.0.0.1/jsbackend/backend.js"></script>
+
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+		<script type="text/javascript" src="js/app-utils.js"></script>
+		<script type="text/javascript" src="js/login.js"></script>
+	</head>
+
+<style>
+
+.borderless table {
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    border-bottom-style: none;
+}
+
+.formbox {
+	margin-top: 10px;
+	padding: 10px;
+	border-style: ridge;
+	border-width: 1px;
+	border-color: #ccc;
+}
+
+.w-60 {
+    width: 60%!important;
+}
+
+</style>
+
+
+
+<body onload="page_init()">
+<div class="container-fluid vh-100 m-0 p-0">
+	<div class="row vh-100 m-0">
+		<div class="col-md-7 order-md-1 col-lg-8 order-lg-1 col-12 order-2 h-100 d-flex flex-column" style="background-color: #00868b;">
+			<!--
+			<div class="flex-dolumn w-100" id="mesibo-logo">
+				<img width="170px" src="assets/images/mesibo-logo.png">	                
+			</div>            
+			-->
+			<div class="flex-column justify-content-center flex-grow-1 overflow-auto align-items-center" style="color: white; font-family:'Helvetica'; font-size: 15px; display:flex;">
+				<img width="170px" id="mesibo-logo" src="assets/images/mesibo-logo.png">	                
+				<div class="justify-content-center mx-auto">
+					<h4 style="color: white; text-align: center;">messaging, group chat, video &amp; voice calls, conferencing server</h4>
+					<div class="row">
+					<div class="col-9" style="text-align: center; margin: auto;">mesibo on-premise server enables messaging, group chat, video &amp; voice calls, conferencing in your apps.  Since you are hosting the entire server, and database in your own data center, the entire data is under your control and stays with you. This made mesibo the preferred choice for financial institutes, telemedicine, and any app that cares for their sensitive business and user data and their privacy. mesibo on-premise server is GDPR, HIPAA compliant. Learn more about mesibo on-premise <a style="color: #fff; text-decoration: underline;" href="https://mesibo.com/on-premise/" target="_blank">here</a> </div>
+					</div>
+					
+					<h4 style="color: white; text-align: center; margin-top: 20px;">Instructions</h4>
+					<div class="w-75" style="text-align: center; margin: auto; margin-bottom: 20px;">These instructions are for setting up mesibo on-premise using this control panel.<br/>However, if you prefer to set it up yourself, refer to the  <a style="color: #fff; text-decoration: underline;" href="https://mesibo.com/documentation/on-premise/" target="_blank">mesibo on-premise documentation</a> for a detailed installation guide.</div>
+					<hr style="border-top: 1px solid #ccc;opacity: 30%; width: 70%">
+					<div class="row">
+					<div class="col-8" style="margin: auto;">
+					<ol style="">				
+						<li>Before using this on-premise control center, you need to set up a password. You will require this password for future administration from this control center.</li>
+						<li>You will require to enter mesibo App token, your MySQL database details and the public IP to configure the server. If you are new to the mesibo, refer to a <a style="color: #fff; text-decoration: underline;" href="https://mesibo.com/documentation/tutorials/get-started/" target="_blank">short tutorial here</a> to learn how to obtain the token.</li>
+						<li>Ensure that the following ports are open: 80, 443, 513, 5222, 5223, 5228, 4443, 5443 and 8443</li>
+						<li>Once the server is running, you can test it using your apps. You can also download mesibo open-source mobile apps from the links below to test your installation.</li>
+					</ol>
+					</div>
+					</div>
+
+					<h4 style="color: white; text-align: center; margin-top: 20px;">mesibo open-source apps</h4>
+					<hr style="border-top: 1px solid #ccc;opacity: 30%; width: 70%">
+					<div class="w-75" style="text-align: center; margin: auto; margin-bottom: 20px;">mesibo open-source messenger apps offer messaging, group chat, video &amp; voice calls, and conferencing. They are ready to customize and deploy. They also demonstrate how to use mesibo APIs in Java, Kotlin, Swift, Objective-C, and Javascript to develop powerful apps in no-time.</div>
+		  <div class="text-center">
+      
+			  <a href="https://itunes.apple.com/us/app/mesibo-realtime-messaging-voice-video/id1222921751"><img src="https://mesibo.com/images/iphone-app.png" >
+			  </a>
+
+			  <a href="https://play.google.com/store/apps/details?id=com.mesibo.mesiboapplication">
+				<img src="https://mesibo.com/images/android-app.png" >
+			  </a>
+                  
+                  </div>
+					<hr style="border-top: 1px solid #ccc;opacity: 30%; width: 70%">
+
+					<div class="d-flex justify-content-center">					  
+						<a  href="https://mesibo.com" target="_blank" style="color: white; text-decoration: none;;padding-right: 10px" ><i class="fa fa-home"></i> Home</a>
+						<a  href="https://mesibo.com/documentation/tutorials/get-started/" target="_blank" style="color: white; text-decoration: none; padding-right: 10px" ><i class="fa fa-book"></i> Tutorials</a> 
+						<a  href="https://mesibo.com/open-source-chat-apps/" target="_blank" style="color: white; text-decoration: none; padding-right: 10px;"><i class="fab fa-github"></i> Source Code</a>
+						<a  href="https://mesibo.com/support/" target="_blank" style="color: white; text-decoration: none;"><i class="fa fa-heart"></i> Support</a>
+					</div>
+				</div>				
+			</div>
+		</div>
+		<div class="col-md-5 order-md-2 col-lg-4 order-lg-2 col-12 order-1 align-self-center" style="background-color: white;">
+			<div id="main-login-form" class="h-100">
+				<div style="text-align:center;" id="mesibo-logo-m">
+					<img width="170px" src="assets/images/mesibo-logo-m.png">	                
+				</div>  
+				<div class="modal-body" style="padding: 5px 10px 5px 10px">
+					<div class="alert alert-danger" role="alert" id="error-message" style="display: none;"></div>
+					<form role="form" id="loading">
+						<div class="modal-header" >
+							<h5 class="col-12 modal-title text-center">loading...</h5>
+						</div>
+					</form>
+					<form role="form" id="unreachable">
+						<div class="modal-header" >
+							<h5 class="col-12 modal-title text-center">Server is Not Reachable</h5>
+						</div>
+						<div style="text-align: center; margin: 10px; color: #555; ">Verify that your server, and also the mesibo-control service is running</div>
+					</form>
+					<form role="form" id="setpass" style="display: none;">
+						<div class="modal-header" >
+							<h5 class="col-12 modal-title text-center">Set Password</h5>
+						</div>
+						<div style="text-align: center; margin: 10px; color: #555; ">Before using on-premise, you need to set up a password. You will require this password for future administration from this control panel</div>
+
+						<div class="formbox">
+						<div class="form-group">
+							<label class="control-label" style="font-size: 15px">Password</label>
+							<div>
+								<input type="password" class="form-control input-lg" id="password" value="" >
+
+							</div>
+							<label class="control-label" style="font-size: 15px; padding-top: 20px">Enter Password Again</label>
+							<div>
+								<input type="password" class="form-control input-lg" id="confirm" value="">
+							</div>
+						</div>
+						<div class="form-group">
+							<div style="text-align: center;">                                    
+								<button type="button" class="btn btn-success" id="login-button" onclick="set_password()" >
+									<span class="spinner-border spinner-border-sm" id="login-spinner" role="status" aria-hidden="true" style="display: none;"></span>
+									<span class="sr-only">Set Password...</span> Set Password
+								</button>                                    
+							</div>                                                                
+						</div>                                                                                    
+	     					<div style="text-align: center; color: grey;">
+						     <p style="font-size: 12px; color: #666;">Using mesibo services and website is subject to mesibo <a style="color:#00868b;" href="https://mesibo.com/terms-of-use/">Terms of Service</a>.</p>
+						     </div>
+						</div>                                                                                    
+					</form>
+					<form role="form" id="login" style="display: none;">
+						<div class="modal-header" >
+							<h5 class="col-12 modal-title text-center">Login</h5>
+						</div>
+						<div style="text-align: center; margin: 10px; color: #555; ">Login using the password which was set during the initial setup </div>
+
+						<div class="formbox">
+						<div class="form-group">
+							<label class="control-label" style="font-size: 15px">Password</label>
+							<div>
+								<input type="password" class="form-control input-lg" id="loginpass" value="">
+							</div>
+						</div>
+						<div class="form-group">
+							<div style="text-align: center;">                                    
+								<button type="button" class="btn btn-success" id="login-button" onclick="login()" >
+									<span class="spinner-border spinner-border-sm" id="login-spinner" role="status" aria-hidden="true" style="display: none;"></span>
+									<span class="sr-only">Login...</span> Login
+								</button>                                    
+							</div>                                                                
+						</div>                                                                                    
+						</div>                                                                                    
+					</form>
+					<form role="form" id="configinit" style="display: none;">
+						<div class="modal-header" >
+							<h5 class="col-12 modal-title text-center">Configure &amp; Start On-Premise Server</h5>
+						</div>
+							
+						<h5 class="col-12 modal-title text-center" style="margin: 10px;" >Checklist</h5>
+
+						<div style="margin: 10px;">mesibo on-premise server will be configured in just three steps. You only need to keep the following information ready.</div>
+					<ol style="list-style-position: inside;">				
+						<li>mesibo App token from the <a style="color: #00868b;" href="https://mesibo.com/console/" target="_blank">mesibo console</a>. If you are new to the mesibo, refer to a tutorial <a style="color: #00868b;" href="https://mesibo.com/documentation/tutorials/get-started/" target="_blank">here</a> to learn how to obtain the token.</li>
+						<li>Database to store your users, groups, messages, etc.</li>
+						<li>Public IP address or the hostname of your server.</li>
+						<li>Ensure that the following ports are open: 80, 443, 513, 5222, 5223, 5228, 4443, 5443 and 8443</li>
+					</ol>
+
+						<div class="form-group">
+							<div style="text-align: center;">                                    
+								<button type="button" class="btn btn-success" id="login-button" onclick="show_form('configtoken')" >
+									<span class="spinner-border spinner-border-sm" id="login-spinner" role="status" aria-hidden="true" style="display: none;"></span>
+									Step 1 - Enter Token  &raquo;
+								</button>                                    
+							</div>                                                                
+						</div>                                                                                    
+					</form>
+					<form role="form" id="configtoken" style="display: none;">
+						<div class="modal-header" >
+							<h5 class="col-12 modal-title text-center">Configure &amp; Start On-Premise Server</h5>
+						</div>
+						<h5 class="col-12 modal-title text-center" style="margin: 10px;" >Step 1 - App Token</h5>
+						<div style="margin: 10px;">Enter a mesibo App token from the <a style="color: #00868b;" href="https://mesibo.com/console/" target="_blank">mesibo console</a>. If you are new to the mesibo, refer to a tutorial <a style="color: #00868b;" href="https://mesibo.com/documentation/tutorials/get-started/" target="_blank">here</a> to learn how to obtain the token.</div>
+
+						<div class="formbox">
+						<div class="form-group">
+							<label class="control-label" style="font-size: 15px">Enter App Token from the <a style="color:#00868b;" href="https://mesibo.com/console/" target="_blank">mesibo Console</a></label>
+							<div>
+								<input type="text" class="form-control input-lg" id="token" value="" maxlength="128">
+							</div>
+						</div>
+						<div class="form-group">
+							<div style="text-align: center;">                                    
+								<button type="button" class="next btn btn-warning" id="login-button" onclick="show_form('configinit')" >
+									&laquo; Previous
+								</button>                                    
+								<button type="button" class="btn btn-success" id="login-button" onclick="settoken()" >
+									<span class="spinner-border spinner-border-sm" id="token-spinner" role="status" aria-hidden="true" style="display: none;"></span>
+									Next  &raquo;
+								</button>                                    
+							</div>                                                                
+						</div>                                                                                    
+						</div>                                                                                    
+					</form>
+					<form role="form" id="configdb" style="display: none;">
+						<div class="modal-header" >
+							<h5 class="col-12 modal-title text-center">Configure &amp; Start On-Premise Server</h5>
+						</div>
+						<h5 class="col-12 modal-title text-center" style="margin: 10px;" >Step 2 - Database</h5>
+						<div style="margin: 10px;">A database is needed to store your users, groups, messages, etc. We recommended configuring the database in the mesibo console so that you can re-deploy on-premise to another server without reconfiguration. The mesibo on-premise can also create a local database if requires (not recommended for production).</div>
+						
+						<div class="formbox">
+						
+						<div style="margin: 10px;">Select an option below.</div>
+
+						<div class="" style="margin: 10px;">
+							<div class="form-check" style="margin-top: 10px;">
+								<input class="form-check-input" type="radio" name="flexRadioDefault" id="localdb" onclick="setdb(0)" checked>
+								<label class="form-check-label" for="flexRadioDefault1">
+									Create a local database (for testing only, NOT RECOMMENDED for production)
+								</label>
+							</div>
+							<div class="form-check" style="margin-top: 10px;">
+								<input class="form-check-input" type="radio" name="flexRadioDefault" id="onpdb" onclick="setdb(1)">
+								<label class="form-check-label" for="flexRadioDefault2">
+									I have configured a database in the mesibo console (Recommended)
+								</label>
+							</div>
+							<div class="form-check" style="margin-top: 10px;">
+								<input class="form-check-input" type="radio" name="flexRadioDefault" id="customdb" onclick="setdb(2)">
+								<label class="form-check-label" for="flexRadioDefault2">
+									I like to configure a database now
+								</label>
+							</div>
+						</div>
+
+						<div id="dbform" style="margin: 10px;">
+						<div class="form-group">
+							<label class="control-label" style="font-size: 15px">Database Host</label>
+							<div>
+								<input type="text" class="form-control input-lg" id="dbhost" value="" maxlength="128">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label" style="font-size: 15px">Database Name</label>
+							<div>
+								<input type="text" class="form-control input-lg" id="dbname" value="" maxlength="64">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label" style="font-size: 15px">Database User</label>
+							<div>
+								<input type="text" class="form-control input-lg" id="dbuser" value="" maxlength="64">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label" style="font-size: 15px">Database Password</label>
+							<div>
+								<input type="text" class="form-control input-lg" id="dbpass" value="" maxlength="64">
+							</div>
+						</div>
+						</div>
+						<div class="form-group">
+							<div style="text-align: center;">                                    
+								<button type="button" class="next btn btn-warning" id="login-button" onclick="show_form('configtoken')" >
+									&laquo; Previous
+								</button>                                    
+								<button type="button" class="btn btn-success" id="login-button" onclick="setdb(4)" >
+									<span class="spinner-border spinner-border-sm" id="db-spinner" role="status" aria-hidden="true" style="display: none;"></span>
+									Next  &raquo;
+								</button>                                    
+							</div>                                                                
+						</div>                                                                                    
+						</div>
+					</form>
+					<form role="form" id="confighost" style="display: none;">
+						<div class="modal-header" >
+							<h5 class="col-12 modal-title text-center">Configure &amp; Start On-Premise Server</h5>
+						</div>
+						<h5 class="col-12 modal-title text-center" style="margin: 10px;" >Step 3 - Enter Public IP or the Hostname</h5>
+						<div style="margin: 10px;">Enter a public IP address or a hostname for this server. Your users will connect using this IP address or the hostname and hence ensure that it is correct.</div>
+					
+						<ul style="">				
+						<li>If you are entering public IP, it should be static.</li>
+						<li>If you are supplying hostname, ensure that the DNS is correctly set up and it is resolving to the static public IP address of this server.</li>
+						<li>mesibo on-premise can generate a Let's Encrypt secure certificate for you. However, you MUST NOT provide default cloud provider hostname (aws, azure, etc.) since the Let's Encrypt policy forbids issuing certificates for them. In doubts, provide public IP.</li>
+						</ul>
+						
+						<div class="formbox">
+						<div class="form-group">
+							<label class="control-label" style="font-size: 15px">Public IP (static) or the Hostname</label>
+							<div>
+								<input type="text" class="form-control input-lg" id="host" value="" maxlength="64">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div style="text-align: center;">                                    
+								<button type="button" class="next btn btn-warning" id="login-button" onclick="show_form('configdb')" >
+									&laquo; Previous
+								</button>                                    
+								<button type="button" class="previous btn btn-success" id="login-button" onclick="sethost()" >
+									<span class="spinner-border spinner-border-sm" id="login-spinner" role="status" aria-hidden="true" style="display: none;"></span>
+									&nbsp; &nbsp; Next  &raquo; &nbsp; &nbsp;
+								</button>                                    
+							</div>                                                                
+						</div>                                                                                    
+						</div>
+					</form>
+					<form role="form" id="configdone" style="display: none;">
+						<div class="modal-header" >
+							<h5 class="col-12 modal-title text-center">Configure &amp; Start On-Premise Server</h5>
+						</div>
+						<h5 class="col-12 modal-title text-center" style="margin: 10px;" >Final Step - Almost there</h5>
+						<div class="formbox">
+						<div style="margin: 10px;">You have completed the configuration. Click on the Start Server button below to start the server. Before that, ensure that you have configured your firewall to open the following ports: 80, 443, 513, 5222, 5223, 5228, 4443, 5443 and 8443</div>
+						<div style="margin: 10px;">Once the server is running, you can test it using your apps. You can also download mesibo open-source mobile apps from the links on the left to test your installation.</div>
+						
+						<div class="form-group">
+							<div style="text-align: center;">                                    
+								<button type="button" class="next btn btn-warning" id="login-button" onclick="show_form('confighost')" >
+									&laquo; Previous
+								</button>                                    
+								<button type="button" class="btn btn-success" id="login-button" onclick="config()" >
+									<span class="spinner-border spinner-border-sm" id="login-spinner" role="status" aria-hidden="true" style="display: none;"></span>
+									Start Server
+								</button>                                    
+							</div>                                                                
+						</div>                                                                                    
+						</div>
+					</form>
+					<form role="form" id="admin" style="display: none;">
+						<div class="modal-header" >
+							<h5 class="col-12 modal-title text-center">On-Premise Server</h5>
+						</div>
+						<div style="text-align: center; margin: 10px; color: #555; ">You can start or stop on-premise server or delete configuration to reconfigure it again.</div>
+						<div class="formbox" >
+						<table class="table borderless">
+							<tbody>
+								<tr>
+									<td>State:</td>
+									<td id="state"></td>
+								</tr>
+								<tr>
+									<td>Sub State:</td>
+									<td id="substate"></td>
+								</tr>
+								<tr>
+									<td>Start on Boot:</td>
+									<td id="enabled"></td>
+								</tr>
+								<tr>
+									<td>Mesibo Service Expiry:</td>
+									<td id="service_expiry"></td>
+								</tr>
+								<tr>
+									<td>Mesibo Service Type:</td>
+									<td id="service_status"></td>
+								</tr>
+							</tbody>
+						</table>
+
+						<div class="form-group">
+							<div style="text-align: center;">                                    
+								<button type="button" class="btn btn-danger" onclick="reset_config()" >
+									Delete Configuration
+								</button>                                    
+								<button type="button" class="btn btn-success" onclick="start()" id="start_button">
+									Start Server
+								</button>                                    
+								<button type="button" class="btn btn-warning" onclick="stop()" id="stop_button" >
+									Stop Server
+								</button>                                    
+							</div>                                                                
+						</div>                                                                                    
+						</div>                                                                                    
+					</form>
+					<!-- <div style="text-align: center; color: grey">  
+	     <p style="font-size: 15px;">The entire source code of this conferencing app is available on <a href="https://github.com/mesibo/conferencing" target="_blank" style="color:grey;">GitHub</a></p>                          
+	     <a style="color:grey; font-size: 30px" target="_blank" href="https://github.com/mesibo/conferencing" ><i class="fab fa-github"></i></a>
+	     </div>   -->
+
+	     <div class="alert alert-light text-align-center" role="alert"><i class="fa fa-lock" style="color: #00868b;"></i> &nbsp; All the information you send is encrypted and protected using the mesibo encryption mechanism using the 2048-bit key, even over a normal HTTP channel.</div>
+				</div>
+			</div><!-- /.modal-content --> 
+
+		</div>    
+	</div>
+
+	<div class="modal fade" id="prompt" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="prompt-title"></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="prompt-body">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" id="prompt-button" onclick="prompt_continue()">Continue</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<script type="text/javascript">
+	function page_init() {
+		init_control_panel();
+
+		if(isMobileDetected()){
+			document.getElementById("mesibo-logo").style.display = "none";
+			document.getElementById("mesibo-logo-m").style.display = "block";
+		}
+
+		/*
+		$('#prompt').on('shown.bs.modal', function (e) {
+		$('#prompt').on('click', '#prompt-button', function (e) {
+			  e.preventDefault();
+			prompt_continue();
+			return false;
+		});
+
+		});
+		 */
+
+	}
+
+
+
+</script>
+</body>
+</html>
+
