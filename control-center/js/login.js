@@ -160,6 +160,8 @@ function init_control_panel() {
 	show_form("login");
 	api = new MesiboBackend();
 	foreground = api.setVisibilityListener(on_foreground);
+
+	// TBD, this has to be host name
 	api.setUrl("http://127.0.0.1/control");
 	
 
