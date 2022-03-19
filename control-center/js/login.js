@@ -54,7 +54,7 @@ var last_op = null;
 var login_fail_count = 0;
 var refresh_interval = 5;
 var onp = { token: '', host: ''};
-var appdb = { type: 0, dbhost: '', dbname: '', dbuser: '', dbpass: ''};
+var appdb = { dbtype: 0, dbhost: '', dbname: '', dbuser: '', dbpass: ''};
 
 function get_value(id, defval) {
 	var e = document.getElementById(id);
@@ -86,6 +86,25 @@ function check_value(id, val) {
 	if(!e) return false;
 	e.checked = val;
 	return true;
+}
+
+function is_checked(id) {
+	var e = document.getElementById(id);
+	if(!e) return false;
+	return e.checked;
+}
+
+function enable_element(id, val) {
+	var e = document.getElementById(id);
+	if(!e) return false;
+	e.disabled = !val;
+	return true;
+}
+
+function is_checked(id) {
+	var e = document.getElementById(id);
+	if(!e) return false;
+	return e.checked;
 }
 
 function set_html_value(id, val) {
@@ -162,7 +181,8 @@ function init_control_panel() {
 	foreground = api.setVisibilityListener(on_foreground);
 
 	// TBD, this has to be host name
-	api.setUrl("http://127.0.0.1/control");
+	//api.setUrl("http://127.0.0.1/control");
+	api.setUrl("/control");
 	
 
 	invoke_api('init');
@@ -279,7 +299,7 @@ function process_response(o) {
 	self.schedule_status();
 }
 
-function invoke_api(op, onp, db, privnw) {
+function invoke_api(op, onp, privnw) {
 	if(op != 'status') refresh_interval = 5;
 	var o = {};
 	o.op = op;
@@ -288,9 +308,14 @@ function invoke_api(op, onp, db, privnw) {
 	if(onp) {
 		o.token = onp.token;
 		o.host = onp.host;
+		if(appdb.dbtype == 2)
+			o.app = appdb;
+		else {
+			// to avoid trasmitting data
+			o.app = {};
+			o.app.dbtype = appdb.dbtype;
+		}
 	}
-
-	if(db) o.app = db;
 
 	if(privnw) o['private'] = privnw;
 
@@ -299,6 +324,8 @@ function invoke_api(op, onp, db, privnw) {
 		last_op = op;
 
 	window.clearTimeout(connect_timer);
+
+	var k  = JSON.stringify(o);
 
 	var self = this;
 	api.send(o, 1, function(cbdata, o) {
@@ -338,11 +365,11 @@ function login() {
 function setdb(type) {
 	last_op = '';
 	if(type < 4) {
-		appdb.type = type;
+		appdb.dbtype = type;
 		return;
 	}
 
-	if(appdb.type != 2) {
+	if(appdb.dbtype != 2) {
 		show_form("confighost");
 		return;
 	}
@@ -397,11 +424,18 @@ function sethost() {
 	o.op = "verify";
         o.host = host;
         o.password = password;
+        o.token = onp.token;
 
 	var self = this;
 	api.send(o, 1, function(cbdata, o) {
 		if(!o.result) {
 			show_error("Bad Public IP or the Hostname");
+			return;
+		}
+
+		if(!o.ishost) {
+			onp.host = host;
+			show_form("configdone");
 			return;
 		}
 
@@ -415,7 +449,7 @@ function sethost() {
 
 function settoken() {
 	last_op = '';
-	appdb.type = 0;
+	appdb.dbtype = 0;
 	var token = get_value("token", '');
 	if(token.length < 32) {
 		show_error("Enter a valid token");
@@ -441,10 +475,14 @@ function settoken() {
 		show_form("configdb");
 		if(isset(o, 'dbonp') && o.dbonp) {
 			check_value('onpdb', true);
-			appdb.type = 1;
+			appdb.dbtype = 1;
 		} else 
 			check_value('localdb', true);
 	});
+}
+
+function setfirewall() {
+	enable_element("start_config", is_checked("firewall"));
 }
 
 function start() {
@@ -479,7 +517,7 @@ function reset_config() {
 
 function config() {
 	show_error(null);
-	invoke_api('start', onp, (appdb.type == 2)?appdb:null, true);
+	invoke_api('start', onp, true);
 }
 
 // disable mousewheel on a input number field when in focus

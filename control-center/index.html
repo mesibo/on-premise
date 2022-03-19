@@ -71,7 +71,7 @@
 					
 					<h4 style="color: white; text-align: center; margin-top: 20px;">Instructions</h4>
 					<div class="row">
-					<div class="col-9" style="text-align: center; margin: auto;">You will be able to configure and run mesibo on-premise in just three steps by following the instructions on the right. These instructions are for setting up mesibo on-premise using this control center. However, if you prefer to set it up yourself, refer to the  <a style="color: #fff; text-decoration: underline;" href="https://mesibo.com/documentation/on-premise/" target="_blank">mesibo on-premise documentation</a> for a detailed installation guide.</div>
+					<div class="col-9" style="text-align: center; margin: auto;">You will be able to configure and run mesibo on-premise in just three steps by following the instructions on the right. These instructions are for setting up mesibo on-premise using this control center. However, if you prefer to set it up entirely by yourself on your server, refer to the  <a style="color: #fff; text-decoration: underline;" href="https://mesibo.com/documentation/on-premise/" target="_blank">mesibo on-premise documentation</a> for a detailed installation guide.</div>
 					</div>
 
 					<h4 style="color: white; text-align: center; margin-top: 20px;">mesibo open-source apps</h4>
@@ -177,21 +177,28 @@
 							
 						<h5 class="col-12 modal-title text-center" style="margin: 10px;" >Checklist</h5>
 
-						<div style="margin: 10px;">mesibo on-premise server will be configured in just three steps. You only need to keep the following information ready.</div>
+						<div style="margin: 10px;">mesibo on-premise server will be configured in just three steps. You only need to enter the following information.</div>
 					<ol style="list-style-position: inside;">				
 						<li>mesibo App token from the <a style="color: #00868b;" href="https://mesibo.com/console/" target="_blank">mesibo console</a>. If you are new to the mesibo, refer to a tutorial <a style="color: #00868b;" href="https://mesibo.com/documentation/tutorials/get-started/" target="_blank">here</a> to learn how to obtain the token.</li>
 						<li>Database to store your users, groups, messages, etc.</li>
 						<li>Public IP address or the hostname of your server.</li>
 						<li>Ensure that the following ports are open: 80, 443, 513, 5222, 5223, 5228, 4443, 5443 and 8443</li>
 					</ol>
+						<div class="formbox">
+						<div class="form-check" style="margin-top: 10px; margin-bottom: 10px; text-align: center;">
+							<input class="form-check-input" type="checkbox" id="firewall" onclick="setfirewall()">
+							<label class="form-check-label" for="firewall">
+								I have opened all the ports mentioned above
+							</label>
+						</div>
 
 						<div class="form-group">
 							<div style="text-align: center;">                                    
-								<button type="button" class="btn btn-success" id="login-button" onclick="show_form('configtoken')" >
-									<span class="spinner-border spinner-border-sm" id="login-spinner" role="status" aria-hidden="true" style="display: none;"></span>
+								<button type="button" class="btn btn-success" id="start_config" onclick="show_form('configtoken')" disabled>
 									Step 1 - Enter Token  &raquo;
 								</button>                                    
 							</div>                                                                
+						</div>                                                                                    
 						</div>                                                                                    
 					</form>
 					<form role="form" id="configtoken" style="display: none;">
@@ -234,20 +241,20 @@
 
 						<div class="" style="margin: 10px;">
 							<div class="form-check" style="margin-top: 10px;">
-								<input class="form-check-input" type="radio" name="flexRadioDefault" id="localdb" onclick="setdb(0)" checked>
-								<label class="form-check-label" for="flexRadioDefault1">
+								<input class="form-check-input" type="radio" name="db" id="localdb" onclick="setdb(0)" checked>
+								<label class="form-check-label" for="localdb">
 									Create a local database (for testing only, NOT RECOMMENDED for production)
 								</label>
 							</div>
 							<div class="form-check" style="margin-top: 10px;">
-								<input class="form-check-input" type="radio" name="flexRadioDefault" id="onpdb" onclick="setdb(1)">
-								<label class="form-check-label" for="flexRadioDefault2">
+								<input class="form-check-input" type="radio" name="db" id="onpdb" onclick="setdb(1)">
+								<label class="form-check-label" for="onpdb">
 									I have configured a database in the mesibo console (Recommended)
 								</label>
 							</div>
 							<div class="form-check" style="margin-top: 10px;">
-								<input class="form-check-input" type="radio" name="flexRadioDefault" id="customdb" onclick="setdb(2)">
-								<label class="form-check-label" for="flexRadioDefault2">
+								<input class="form-check-input" type="radio" name="db" id="customdb" onclick="setdb(2)">
+								<label class="form-check-label" for="customdb">
 									I like to configure a database now
 								</label>
 							</div>
