@@ -181,6 +181,11 @@ function init_control_panel() {
 	api = new MesiboBackend();
 	foreground = api.setVisibilityListener(on_foreground);
 
+	onp.host = location.hostname;
+	if(onp.host != "127.0.0.1") {
+		set_value("host", onp.host);
+	}
+
 	// TBD, this has to be host name
 	//api.setUrl("http://127.0.0.1/control");
 	api.setUrl("/control");
