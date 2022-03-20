@@ -500,6 +500,15 @@ function settoken() {
 		onp.token = token;
 		show_form("configdb");
 		if(isset(o, 'dbonp') && o.dbonp) {
+			if(!o.dbok) {
+				show_error(o.dberror);
+				appdb.dbtype = 0;
+				set_checked('localdb', true);
+				enable_element('onpdb', false);
+				prompt_user("Database error", "Your token is valid. However, you have configured a database in the mesibo console which is not accessible. Hence, you either need to use other two options or fix the database and restart configuration again", "Ok", function() {});
+				return;
+			}
+			enable_element('onpdb', true);
 			set_checked('onpdb', true);
 			appdb.dbtype = 1;
 		} else 
