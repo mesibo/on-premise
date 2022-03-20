@@ -53,6 +53,7 @@ var foreground = true;
 var last_op = null;
 var login_fail_count = 0;
 var refresh_interval = 5;
+var disable_form_change = false;
 var onp = { token: '', host: ''};
 var appdb = { dbtype: 0, dbhost: '', dbname: '', dbuser: '', dbpass: ''};
 
@@ -81,7 +82,7 @@ function get_value_or_error(id, minlen, error) {
 	return val;
 }
 
-function check_value(id, val) {
+function set_checked(id, val) {
 	var e = document.getElementById(id);
 	if(!e) return false;
 	e.checked = val;
@@ -150,7 +151,7 @@ function show_inline_block_element(id, show) {
 }
 
 function show_form(id) {
-	if(id == showing) return;
+	if(id == showing || disable_form_change) return;
 	var forms = ["loading", "setpass", "login", "admin", "unreachable", "configinit", "configtoken", "configdb", "confighost", "configdone"];
 	forms.forEach(function(eid) {
 		show_element(eid, eid == id);
@@ -283,8 +284,11 @@ function process_response(o) {
 	set_html_value("state", o.state.state);
 	set_html_value("substate", o.state.substate);
 	set_html_value("enabled", o.state.enabled);
-	set_html_value("service_expiry", expiry);
+	set_html_value("service_expiry", (o.expiry > 0)?"active":"expired");
 	set_html_value("service_status", o.paid?"Paid":"Free");
+	set_html_value("dbhost_status", o.dbhost);
+	set_html_value("realtime_status", o.realtime);
+	set_checked("backend_check", o.bport > 0);
 
 	var show_stop = false;
 	var show_start = false;
@@ -426,24 +430,41 @@ function sethost() {
         o.password = password;
         o.token = onp.token;
 
+	show_error(null);
 	var self = this;
 	api.send(o, 1, function(cbdata, o) {
 		if(!o.result) {
 			show_error("Bad Public IP or the Hostname");
 			return;
 		}
+		
 
-		if(!o.ishost) {
+		if(o.verified) {
 			onp.host = host;
 			show_form("configdone");
 			return;
 		}
+		
 
-		var pip = "Is this the static public IP of this server?<br/><br/>" + o.pip;
-		prompt_user("Confirm Public IP", pip, "Yes", function() {
+		var msg = '';
+		if(o.ishost) {
+			msg = host + " resolves to the following IP address. ";
+		}
+		msg += "We could not verify that this is the correct static public IP for this server. ";
+
+		msg += "<br/><br/>" + o.pip; 
+		msg += "<br/><br/>Please verify static public IP and port status in the firewall and try again."; 
+		
+		prompt_user("Incorrect Public IP", msg, "Ok", function() {});
+		
+		/*
+		If you continue, your users may not be able to connect".
+
+		prompt_user("Incorrect Public IP", pip, "Yes", function() {
 			onp.host = host;
 			show_form("configdone");
 		});
+		*/
 	});
 }
 
@@ -474,15 +495,20 @@ function settoken() {
 		onp.token = token;
 		show_form("configdb");
 		if(isset(o, 'dbonp') && o.dbonp) {
-			check_value('onpdb', true);
+			set_checked('onpdb', true);
 			appdb.dbtype = 1;
 		} else 
-			check_value('localdb', true);
+			set_checked('localdb', true);
 	});
 }
 
 function setfirewall() {
 	enable_element("start_config", is_checked("firewall"));
+}
+
+function setbackend() {
+	invoke_api('backend');
+	prompt_user("Backend API Server", "Configuration Saved. Stop and Start for changes to apply", "Ok", function() {});
 }
 
 function start() {

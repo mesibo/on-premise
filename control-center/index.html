@@ -55,7 +55,7 @@
 <body onload="page_init()">
 <div class="container-fluid min-vh-100 m-0 p-0">
 	<div class="row vh-100 m-0">
-		<div class="col-md-7 order-md-1 col-lg-8 order-lg-1 col-12 order-2 h-100 d-flex flex-column" style="background-color: #00868b;">
+		<div class="col-md-7 order-md-1 col-lg-8 order-lg-1 col-12 order-2 d-flex flex-column" style="background-color: #00868b;">
 			<!--
 			<div class="flex-dolumn w-100" id="mesibo-logo">
 				<img width="170px" src="assets/images/mesibo-logo.png">	                
@@ -339,7 +339,8 @@
 						</div>
 						<h5 class="col-12 modal-title text-center" style="margin: 10px;" >Final Step - Almost there</h5>
 						<div class="formbox">
-						<div style="margin: 10px;">You have completed the configuration. Click on the Start Server button below to start the server. Before that, ensure that you have configured your firewall to open the following ports: 80, 443, 513, 5222, 5223, 5228, 4443, 5443 and 8443</div>
+						<div style="margin: 10px;">Congratulations! You have successfully configured the mesibo on-premise server.</div>
+						<div style="margin: 10px;">Click on the Start Server button below to start the server. Before that, ensure that you have configured the firewall to open ports 80, 443, 513, 5222, 5223, 5228, 4443, 5443 and 8443.</div>
 						<div style="margin: 10px;">Once the server is running, you can test it using your apps. You can also download mesibo open-source mobile apps from the links on the left to test your installation.</div>
 						
 						<div class="form-group">
@@ -361,27 +362,43 @@
 						</div>
 						<div style="text-align: center; margin: 10px; color: #555; ">You can start or stop on-premise server or delete configuration to reconfigure it again.</div>
 						<div class="formbox" >
-						<table class="table borderless">
+						<table class="table table-striped">
 							<tbody>
 								<tr>
-									<td>State:</td>
+									<td class="text-right pr-4">State:</td>
 									<td id="state"></td>
 								</tr>
 								<tr>
-									<td>Sub State:</td>
+									<td class="text-right pr-4">Sub State:</td>
 									<td id="substate"></td>
 								</tr>
 								<tr>
-									<td>Start on Boot:</td>
+									<td class="text-right pr-4">Start on Boot:</td>
 									<td id="enabled"></td>
 								</tr>
 								<tr>
-									<td>Mesibo Service Expiry:</td>
-									<td id="service_expiry"></td>
+									<td class="text-right pr-4">Real-time server <a style="color:#00868b;" target="_blank" href="https://mesibo.com/documentation/api/real-time-api/" ><i class="fa fa-book"></i></a>:</td>
+									<td id="realtime_status"></td>
 								</tr>
 								<tr>
-									<td>Mesibo Service Type:</td>
-									<td id="service_status"></td>
+									<td class="text-right pr-4">Backend server <a style="color:#00868b;" target="_blank" href="https://mesibo.com/documentation/api/backend-api/" ><i class="fa fa-book"></i></a>:</td>
+									<td>
+						
+										<div class="form-check">
+										<input class="form-check-input" type="checkbox" id="backend_check" style="background:#00868b;" onclick="setbackend()">
+										<label class="form-check-label" for="firewall">
+											Enabled
+										</label>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-right pr-4">Database:</td>
+									<td id="dbhost_status"></td>
+								</tr>
+								<tr>
+									<td class="text-right pr-4">Mesibo Acccount Status:</td>
+									<td id="service_expiry"></td>
 								</tr>
 							</tbody>
 						</table>
@@ -416,7 +433,7 @@
 	<div class="modal fade" id="prompt" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-header bg-warning">
 					<h5 class="modal-title" id="prompt-title"></h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -438,7 +455,7 @@
 		init_control_panel();
 
 		if(isMobileDetected()){
-			document.getElementById("mesibo-logo").style.display = "none";
+		//	document.getElementById("mesibo-logo").style.display = "none";
 			document.getElementById("mesibo-logo-m").style.display = "block";
 		}
 
