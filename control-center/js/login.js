@@ -127,6 +127,16 @@ function show_element(id, show) {
 	return e;
 }
 
+function set_class(id, cls, enable) {
+	if(!id)
+		return;
+
+	var e = document.getElementById(id);
+	if(!e) return null;
+	if(enable) e.classList.add(cls);
+	else e.classList.remove(cls);
+}
+
 function show_inline_element(id, show) {
 	if(!id)
 		return;
@@ -286,6 +296,7 @@ function process_response(o) {
 	}
 
 	show_form("admin");
+	set_html_value("appname", o.name + " (aid: " + o.aid + ")");
 	set_html_value("state", o.state.state);
 	set_html_value("substate", o.state.substate);
 	set_html_value("enabled", o.state.enabled);
@@ -323,7 +334,9 @@ function invoke_api(op, onp, privnw) {
 			// to avoid trasmitting data
 			o.app = {};
 			o.app.dbtype = appdb.dbtype;
+			o.app.dbreset = is_checked('resetdb_check');
 		}
+
 	}
 
 	if(privnw) o['private'] = privnw;
@@ -371,10 +384,16 @@ function login() {
 	get_status();
 }
 
+function update_db_form() {
+	show_element("resetdb", appdb.dbtype == 0);
+	show_element('dbform', appdb.dbtype == 2);
+}
+
 function setdb(type) {
 	last_op = '';
 	if(type < 4) {
 		appdb.dbtype = type;
+		update_db_form();
 		return;
 	}
 
@@ -382,25 +401,29 @@ function setdb(type) {
 		show_form("confighost");
 		return;
 	}
-	
-	var dbhost = get_value_or_error('dbhost', 5, 'Enter a valid database host');
-	if(!dbhost) return;
-	var dbname = get_value_or_error('dbname', 1, 'Enter a valid database name');
-	if(!dbname) return;
-	var dbuser = get_value_or_error('dbuser', 1, 'Enter a valid database user');
-	if(!dbuser) return;
-	var dbpass = get_value_or_error('dbpass', 1, 'Enter a valid database pass');
-	if(!dbpass) return;
-	show_error(null);
-	
+
 	var o = {};
 	o.op = "verify";
-        o.password = password;
-        o.app = {};
-        o.app.dbhost = dbhost;
-        o.app.dbname = dbname;
-        o.app.dbuser = dbuser;
-        o.app.dbpass = dbpass;
+	o.password = password;
+	o.app = {};
+	o.app.dbtype = appdb.dbtype;
+
+	if(appdb.dbtype == 2) {
+		var dbhost = get_value_or_error('dbhost', 5, 'Enter a valid database host');
+		if(!dbhost) return;
+		var dbname = get_value_or_error('dbname', 1, 'Enter a valid database name');
+		if(!dbname) return;
+		var dbuser = get_value_or_error('dbuser', 1, 'Enter a valid database user');
+		if(!dbuser) return;
+		var dbpass = get_value_or_error('dbpass', 1, 'Enter a valid database pass');
+		if(!dbpass) return;
+		o.app.dbhost = dbhost;
+		o.app.dbname = dbname;
+		o.app.dbuser = dbuser;
+		o.app.dbpass = dbpass;
+	}
+
+	show_error(null);
 
 	show_inline_block_element('db-spinner', true);
 	var self = this;
@@ -412,10 +435,12 @@ function setdb(type) {
 		}
 
 		if(o.dbok) {
-			appdb.dbhost = dbhost;
-			appdb.dbname = dbname;
-			appdb.dbuser = dbuser;
-			appdb.dbpass = dbpass;
+			if(appdb.dbtype == 2) {
+				appdb.dbhost = o.app.dbhost;
+				appdb.dbname = o.app.dbname;
+				appdb.dbuser = o.app.dbuser;
+				appdb.dbpass = o.app.dbpass;
+			}
 			show_form("confighost");
 			return;
 		}
@@ -431,9 +456,9 @@ function sethost() {
 	if(!host) return;
 	var o = {};
 	o.op = "verify";
-        o.host = host;
-        o.password = password;
-        o.token = onp.token;
+	o.host = host;
+	o.password = password;
+	o.token = onp.token;
 
 	show_error(null);
 	var self = this;
@@ -442,14 +467,14 @@ function sethost() {
 			show_error("Bad Public IP or the Hostname");
 			return;
 		}
-		
+
 
 		if(o.verified) {
 			onp.host = host;
 			show_form("configdone");
 			return;
 		}
-		
+
 
 		var msg = '';
 		if(o.ishost) {
@@ -459,9 +484,9 @@ function sethost() {
 
 		msg += "<br/><br/>" + o.pip; 
 		msg += "<br/><br/>Please verify static public IP and port status in the firewall and try again."; 
-		
+
 		prompt_user("Incorrect Public IP", msg, "Ok", function() {});
-		
+
 		/*
 		If you continue, your users may not be able to connect".
 
@@ -485,8 +510,8 @@ function settoken() {
 
 	var o = {};
 	o.op = "verify";
-        o.token = token;
-        o.password = password;
+	o.token = token;
+	o.password = password;
 
 	show_inline_block_element('token-spinner', true);
 	var self = this;
@@ -499,7 +524,9 @@ function settoken() {
 		}
 		onp.token = token;
 		show_form("configdb");
+
 		if(isset(o, 'dbonp') && o.dbonp) {
+			if(!o) return;
 			if(!o.dbok) {
 				show_error(o.dberror);
 				appdb.dbtype = 0;
@@ -511,8 +538,13 @@ function settoken() {
 			enable_element('onpdb', true);
 			set_checked('onpdb', true);
 			appdb.dbtype = 1;
-		} else 
+		} else {
+			appdb.dbtype = 0;
 			set_checked('localdb', true);
+			enable_element('onpdb', false);
+		}
+
+		update_db_form();
 	});
 }
 
