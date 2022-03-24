@@ -533,7 +533,6 @@ function settoken() {
 				set_checked('localdb', true);
 				enable_element('onpdb', false);
 				update_db_form();
-
 				prompt_user("Database error", "Your token is valid. However, you have configured a database in the mesibo console which is not accessible. Hence, you either need to use other two options or fix the database and restart configuration again", "Ok", function() {});
 				return;
 			}
@@ -577,6 +576,13 @@ function prompt_user(title, body, action, callback) {
 	window.$('#prompt').modal('show');
 
 }
+
+function update() {
+	window.clearTimeout(status_timer)
+	prompt_api = 'update';
+	prompt_user("Update Server", "The update may restart the webserver and the mesibo server. Your users may be disconnected during the update.", "Continue", prompt_continue);
+}
+
 
 function stop() {
 	prompt_api = 'stop';
