@@ -522,6 +522,13 @@ function settoken() {
 			show_error("Bad or Expired Token");
 			return;
 		}
+
+		if(isset(o, 'server') && o.server.length > 0) {
+			prompt_user("Server is already running", "You are already running the mesibo on-premise server for this app on " + o.server + ". If you like to run on-premise here, stop that server and try again.", "Ok", function() {});
+
+			return;
+		}
+
 		onp.token = token;
 		show_form("configdb");
 
