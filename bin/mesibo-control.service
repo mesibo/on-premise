@@ -1,0 +1,17 @@
+[Unit]
+Description=mesibo on-premise control-center server
+Documentation=http://mesibo.com
+After=network-online.target remote-fs.target nss-lookup.target
+Wants=network-online.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/mesibo-control.pid
+ExecStart=/mesibo/bin/mesibo-control start
+ExecReload=/mesibo/bin/mesibo-control reload
+ExecStop=/mesibo/bin/mesibo-control stop
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

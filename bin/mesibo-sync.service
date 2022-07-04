@@ -1,0 +1,14 @@
+[Unit]
+Description=mesibo sync server
+Documentation=http://mesibo.com
+After=network-online.target remote-fs.target nss-lookup.target
+Wants=network-online.target
+
+[Service]
+User=root
+Group=root
+ExecStart=/mesibo/bin/mesibo-sync.sh
+ExecStop=pkill -9 mesibo-sync.sh
+
+[Install]
+WantedBy=multi-user.target
