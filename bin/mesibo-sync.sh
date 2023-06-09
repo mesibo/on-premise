@@ -44,6 +44,10 @@ chown -R nginx:nginx /mesibo/git/on-premise/control-center/
 /bin/cp -f /mesibo/git/on-premise/bin/mesibo /mesibo/bin
 /bin/cp -f /mesibo/git/on-premise/bin/mesibo-sync.sh /mesibo/bin
 
+semanage fcontext -a -t bin_t /mesibo/bin
+chcon -Rv -h system_u:object_r:bin_t:s0 /mesibo/bin/
+restorecon -R -v /mesibo/bin 
+
 systemctl restart mesibo-control
 systemctl start mesibo-sync
 
