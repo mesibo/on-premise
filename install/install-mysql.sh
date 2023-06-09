@@ -35,8 +35,8 @@ echo "mysql securing installation..."
 mysql_secure_installation -u root --password=mesibo -D
 
 # Disable Password policies again since mysql_secure_installation would have enabled it
-mysql -e "uninstall plugin validate_password"
-mysql -e "UNINSTALL COMPONENT 'file://component_validate_password'"
+mysql -e "uninstall plugin validate_password" -u root --password=mesibo
+mysql -e "UNINSTALL COMPONENT 'file://component_validate_password'" -u root --password=mesibo
 
 if ! grep -q mesibo /etc/my.cnf.d/mysql-server.cnf; then
 cat >> /etc/my.cnf.d/mysql-server.cnf << EOF
