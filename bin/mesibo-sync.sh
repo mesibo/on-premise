@@ -47,5 +47,7 @@ chown -R nginx:nginx /mesibo/git/on-premise/control-center/
 systemctl restart mesibo-control
 systemctl start mesibo-sync
 
+systemctl enable nginx
+
 echo "done"
 
