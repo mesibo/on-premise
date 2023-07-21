@@ -1,6 +1,6 @@
 [Unit]
 Description=mesibo real-time communication server
-Documentation=http://mesibo.com/documentation/
+Documentation=https://mesibo.com/documentation/
 After=network-online.target remote-fs.target nss-lookup.target
 Wants=network-online.target
 

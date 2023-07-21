@@ -1,6 +1,6 @@
 [Unit]
 Description=mesibo on-premise control-center server
-Documentation=http://mesibo.com
+Documentation=https://mesibo.com
 After=network-online.target remote-fs.target nss-lookup.target
 Wants=network-online.target
 

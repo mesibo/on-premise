@@ -23,6 +23,7 @@ git clone https://github.com/mesibo/on-premise > /var/tmp/git-onpremise.logs
 git config pull.rebase false
 
 chmod a+x /mesibo/git/on-premise/bin/*
+chmod 644 /mesibo/git/on-premise/bin/*.service
 /bin/cp -f /mesibo/git/on-premise/bin/*.service /usr/lib/systemd/system/
 systemctl daemon-reload
 
@@ -31,7 +32,8 @@ fi
 
 if [ $changed -eq 0 ]; then
 	systemctl restart mesibo-control
-	exit;
+	echo "Restarting mesibo-control"
+	exit 0
 fi
 
 chmod a+x /mesibo/git/on-premise/update.sh
@@ -54,4 +56,5 @@ systemctl start mesibo-sync
 systemctl enable nginx
 
 echo "done"
+exit 0
 
