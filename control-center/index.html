@@ -245,7 +245,9 @@
 							<h5 class="col-12 modal-title text-center">Configure &amp; Start On-Premise Server</h5>
 						</div>
 						<h5 class="col-12 modal-title text-center" style="margin: 10px;" >Step 2 - Database</h5>
-						<div style="margin: 10px;">A database is needed to store your users, groups, messages, etc. We recommended configuring the database in the mesibo console so that you can re-deploy on-premise to another server without reconfiguration. The mesibo on-premise can also create a local database if requires (not recommended for production).</div>
+						<div style="margin: 10px;">
+						mesibo stores your users, groups, messages, etc. in your private database. We recommend configuring the database in the mesibo console for seamless redeployment, or you can specify a database here. While mesibo on-premise can run on a local database, for optimal scalability and performance, we recommend running the database on a separate instance in a production environment.
+						</div>
 						
 						<div class="formbox">
 						
@@ -255,7 +257,7 @@
 							<div class="form-check" style="margin-top: 10px;">
 								<input class="form-check-input" type="radio" name="db" id="localdb" onclick="setdb(0)" checked>
 								<label class="form-check-label" for="localdb">
-									Create a local database (for testing only, NOT RECOMMENDED for production)
+									Create a local database
 								</label>
 							</div>
 							<div class="form-check" style="margin-top: 10px;">
